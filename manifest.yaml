@@ -1,0 +1,62 @@
+# Paste at https://api.slack.com/apps -> Create New App -> From a manifest
+# Replace every YOUR-DOMAIN with your public https host (ngrok while developing).
+display_information:
+  name: Klaxon
+  description: Incident desk agent for querying and managing issues
+  background_color: "#1a1d21"
+
+features:
+  bot_user:
+    display_name: Klaxon
+    always_online: true
+
+  app_home:
+    home_tab_enabled: true
+    messages_tab_enabled: true
+    messages_tab_read_only_enabled: false
+
+  slash_commands:
+    - command: /klaxon
+      url: https://prone-cartwheel-sheet.ngrok-free.dev/slack/commands
+      description: Talk to the Klaxon incident agent
+      usage_hint: "how many open critical issues?"
+      should_escape: false
+    - command: /klaxon-reset
+      url: https://prone-cartwheel-sheet.ngrok-free.dev/slack/commands
+      description: Reset your Klaxon conversation in this channel
+    - command: /ping
+      url: https://prone-cartwheel-sheet.ngrok-free.dev/slack/commands
+      description: Check the agent is alive
+
+oauth_config:
+  redirect_urls:
+    - https://prone-cartwheel-sheet.ngrok-free.dev/slack/oauth/callback
+  scopes:
+    bot:
+      - app_mentions:read
+      - channels:history
+      - chat:write
+      - commands
+      - im:history
+      - im:write
+      - reactions:write
+      - users:read
+      - groups:history
+
+settings:
+  event_subscriptions:
+    request_url: https://prone-cartwheel-sheet.ngrok-free.dev/slack/events
+    bot_events:
+      - app_mention
+      - message.channels
+      - message.groups
+      - message.im
+      - app_home_opened
+
+  interactivity:
+    is_enabled: true
+    request_url: https://prone-cartwheel-sheet.ngrok-free.dev/slack/interactivity
+
+  org_deploy_enabled: false
+  socket_mode_enabled: false
+  token_rotation_enabled: false
